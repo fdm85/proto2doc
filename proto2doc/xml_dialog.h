@@ -2,6 +2,7 @@
 #ifndef XML_DIALOG
 #define XML_DIALOG
 
+#include "mydebug.h"
 #include "entry.h"
 #include <QDialog>
 #include <QLineEdit>
@@ -31,6 +32,7 @@ class mark_dialog : public QDialog
 public:
   mark_dialog( QWidget *parent = NULL, QList<QTreeWidgetItem *> *topicList = NULL );
   entry getEntry() const;
+  static void copydebug(entry entry);
 
 private:
   QLineEdit *o_Titel;

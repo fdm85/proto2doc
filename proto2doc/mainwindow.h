@@ -23,6 +23,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private slots:
     void on_add_point_clicked();
     void on_pushButton_clicked();
@@ -36,6 +37,7 @@ private:
     QTreeWidget *topNode;
     Ui::MainWindow *ui;
     local_xml_content content;
+    QString filename;
 
 };
 

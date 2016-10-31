@@ -63,11 +63,10 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
 }
 
 
-
-
 entry mark_dialog::getEntry() const
 {
-  qDebug()<< o_Titel->text();
+
+  myDebug::dbg( o_Titel->text());
   entry::type_t typespec = entry::_undef;
   if(o_specifier->currentText().contains("_topic"))
     typespec = entry::_topic;
@@ -77,8 +76,6 @@ entry mark_dialog::getEntry() const
     typespec = entry::_todo;
 
   const entry::type_t r_typespec = typespec;
-
-
   return entry(o_Titel->text(),
                o_Inhalt->toPlainText(),
                o_date_acitve->isChecked() ? QDate(o_Frist_year->text().toInt(),o_Frist_month->text().toInt(), o_Frist_day->text().toInt() ) : QDate(),
@@ -88,3 +85,29 @@ entry mark_dialog::getEntry() const
 
 }
 
+
+void mark_dialog::copydebug(entry entry_c)
+{
+  QString debug_text;
+  QString datum;
+
+  debug_text.clear();
+  if(entry_c.o_Frist().isValid())
+  {
+    datum = entry_c.o_Frist().toString("dd_MM_yyyy");
+  }
+  else
+  {
+    datum = "N/V";
+  }
+
+  debug_text.append("# Titel: ").append(entry_c.o_Titel()).append("\r\n");
+  debug_text.append("\t").append("-Datum: ").append(datum).append("\r\n");
+  debug_text.append("\t").append("-Verantwortlich: ").append(entry_c.o_Verantwortlich()).append("\r\n");
+  debug_text.append("\t").append("Typ: ").append(entry::spec2str(entry_c.o_specifier()));
+  debug_text.append("\t").append("-Inhalt: ").append(entry_c.o_Inhalt()).append("\r\n");
+
+
+  myDebug::dbg(debug_text);
+
+}

@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\xmlRelevant.o
+./release\local_xml_content.o
+./release\xml_dialog.o
+./release\mydebug.o
+./release\moc_mainwindow.o
+./release\moc_xmlRelevant.o
+./release\moc_local_xml_content.o
+./release\moc_mydebug.o
+);

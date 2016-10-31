@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\xmlRelevant.o
+./debug\local_xml_content.o
+./debug\xml_dialog.o
+./debug\mydebug.o
+./debug\moc_mainwindow.o
+./debug\moc_xmlRelevant.o
+./debug\moc_local_xml_content.o
+./debug\moc_mydebug.o
+);

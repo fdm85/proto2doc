@@ -7,10 +7,14 @@
 #include "mainwindow.h"
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
+  myDebug::debug_filename = QDateTime::currentDateTime().toString("hh-mm_-_dd-MM-yyyy").append(".txt");
+
+  qDebug()<< myDebug::debug_filename;
   ui->setupUi(this);
   topicList.clear();
 
@@ -20,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->treeWidget->setHeaderLabels(headers);
   add_test_content();
 }
+
 
 
 MainWindow::~MainWindow()
@@ -36,7 +41,6 @@ void MainWindow::on_add_point_clicked()
   if(xml_dialog.exec() == QDialog::Accepted)
   {
     ref_entry = xml_dialog.getEntry();
-    qDebug()<<ref_entry.o_Inhalt();
   }
   else
   {
@@ -54,7 +58,6 @@ void MainWindow::on_pushButton_clicked()
   if(xml_dialog.exec() == QDialog::Accepted)
   {
     ref_entry = xml_dialog.getEntry();
-    qDebug()<<ref_entry.o_Inhalt();
   }
   else
   {
@@ -68,20 +71,21 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::add_topic(entry ref_entry)
 {
   QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich() << ref_entry.o_Frist().toString("dd_mm_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich() << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
 
   topicList.append(new QTreeWidgetItem( ui->treeWidget, tmp_list));
+  mark_dialog::copydebug(ref_entry);
 }
 
 void MainWindow::add_sub(entry ref_entry)
 {
-  qDebug()<< ref_entry.o_topicIndex();
   QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich() << ref_entry.o_Frist().toString("dd_mm_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich() << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
 
   QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList.at(ref_entry.o_topicIndex()), tmp_list);
   pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags() | Qt::ItemIsEditable);
   topicList.at(ref_entry.o_topicIndex())->addChild(pobj_tree_item);
+  mark_dialog::copydebug(ref_entry);
 }
 
 void MainWindow::add_test_content()
