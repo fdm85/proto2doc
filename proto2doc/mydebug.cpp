@@ -20,7 +20,7 @@ void myDebug::dbg(QString text)
 {
   QString path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
   QFile file(myDebug::debug_filename);
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
     return;
 
   QTextStream out(&file);

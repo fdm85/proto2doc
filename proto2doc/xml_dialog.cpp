@@ -10,7 +10,7 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
     o_Inhalt( new QTextEdit() ),
     o_Verantwortlich( new QLineEdit() ),
     o_specifier( new QComboBox() ),
-    o_Topic( new QComboBox() ),
+    o_Topic_i( new QComboBox() ),
     o_Frist_day(new QSpinBox() ),
     o_Frist_month(new QSpinBox() ),
     o_Frist_year(new QSpinBox() ),
@@ -29,7 +29,7 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
 
   if(topicList != NULL) for(int i=0; i<topicList->length();++i)
   {
-    o_Topic->addItem(topicList->at(i)->text(0));
+    o_Topic_i->addItem(topicList->at(i)->text(0));
   }
 
   connect( m_confirmButton, SIGNAL( clicked() ),
@@ -44,7 +44,7 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
   date->addWidget(o_Frist_year);
   date->addWidget(o_Frist_month);
   date->addWidget(o_Frist_day);
-  fLayout->addRow( "Topic", o_Topic);
+  fLayout->addRow( "Topic", o_Topic_i);
   fLayout->addRow( "Titel:", o_Titel );
   fLayout->addRow( "Inhalt:", o_Inhalt );
   fLayout->addRow( "Frist/Datum:", date);
@@ -81,31 +81,32 @@ entry mark_dialog::getEntry() const
                o_date_acitve->isChecked() ? QDate(o_Frist_year->text().toInt(),o_Frist_month->text().toInt(), o_Frist_day->text().toInt() ) : QDate(),
                o_Verantwortlich->text(),
                r_typespec,
-               o_Topic->currentIndex() );
+               o_Topic_i->currentText(),
+               o_Topic_i->currentIndex() );
 
 }
 
 
-void mark_dialog::copydebug(entry entry_c)
+void mark_dialog::copydebug(entry *entry_c)
 {
   QString debug_text;
   QString datum;
 
   debug_text.clear();
-  if(entry_c.o_Frist().isValid())
+  if(entry_c->o_Frist().isValid())
   {
-    datum = entry_c.o_Frist().toString("dd_MM_yyyy");
+    datum = entry_c->o_Frist().toString("dd_MM_yyyy");
   }
   else
   {
     datum = "N/V";
   }
 
-  debug_text.append("# Titel: ").append(entry_c.o_Titel()).append("\r\n");
-  debug_text.append("\t").append("-Datum: ").append(datum).append("\r\n");
-  debug_text.append("\t").append("-Verantwortlich: ").append(entry_c.o_Verantwortlich()).append("\r\n");
-  debug_text.append("\t").append("Typ: ").append(entry::spec2str(entry_c.o_specifier()));
-  debug_text.append("\t").append("-Inhalt: ").append(entry_c.o_Inhalt()).append("\r\n");
+  debug_text.append("# Titel: ").append(entry_c->o_Titel()).append("\n");
+  debug_text.append("\t").append("-Datum: ").append(datum).append("\n");
+  debug_text.append("\t").append("-Verantwortlich: ").append(entry_c->o_Verantwortlich()).append("\n");
+  debug_text.append("\t").append("-Typ: ").append(entry::spec2str(entry_c->o_specifier())).append("\n");
+  debug_text.append("\t").append("-Inhalt: ").append(entry_c->o_Inhalt()).append("\n\n");
 
 
   myDebug::dbg(debug_text);

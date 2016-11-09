@@ -18,13 +18,21 @@ SOURCES += main.cpp\
     includes/xmlRelevant.cpp \
     local_xml_content.cpp \
     xml_dialog.cpp \
-    mydebug.cpp
+    mydebug.cpp \
+    document_writer.cpp \
+    entry.cpp \
+    select_dialog.cpp \
+    document_reader.cpp
 
 HEADERS  += mainwindow.h \
     includes/xmlRelevant.h \
     local_xml_content.h \
     xml_dialog.h \
     entry.h \
-    mydebug.h
+    mydebug.h \
+    document_writer.h \
+    select_dialog.h \
+    document_reader.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    select_dialog.ui

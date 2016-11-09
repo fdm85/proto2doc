@@ -32,13 +32,13 @@ class mark_dialog : public QDialog
 public:
   mark_dialog( QWidget *parent = NULL, QList<QTreeWidgetItem *> *topicList = NULL );
   entry getEntry() const;
-  static void copydebug(entry entry);
+  static void copydebug(entry *entry);
 
 private:
   QLineEdit *o_Titel;
   QTextEdit *o_Inhalt;
   QLineEdit *o_Verantwortlich;
-  QComboBox *o_specifier, *o_Topic;
+  QComboBox *o_specifier, *o_Topic_i;
   QSpinBox *o_Frist_day, *o_Frist_month, *o_Frist_year;
   QCheckBox *o_date_acitve;
   QPushButton *m_confirmButton, *m_cancelButton;
