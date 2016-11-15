@@ -1,0 +1,9 @@
+remove topics and subs
+edit topics
+Inhalt letzte Spalte
+Datum editierbar bei topic
+Verantwortlicher fehlt
+Check_all button im SpeicherDialog
+Buttons ausblenden wenn Ansicht gewechselt
+topic wird immer als toDo gespeichert
+restore Funktion kann keine Zeilenumbrüche und tabs ab
