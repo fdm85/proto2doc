@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   myDebug::debug_filename = QDateTime::currentDateTime().toString("hh-mm_-_dd-MM-yyyy").append(".log");
 
-  filename = "/" + myDebug::debug_filename;
+  filename = "/" + myDebug::debug_filename.remove(".log").append(".txt");
 
   qDebug()<< myDebug::debug_filename;
   ui->setupUi(this);
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
   QStringList headers;
   headers << "Titel" << "Verantwortlich" << "Datum/Frist" << "Typ"  << "Inhalt";
   ui->treeWidget->setHeaderLabels(headers);
-    add_test_content();
+  add_test_content();
 }
 
 MainWindow::~MainWindow()
@@ -30,10 +30,36 @@ MainWindow::~MainWindow()
 void MainWindow::on_add_Sub_clicked()
 {
   entry ref_entry;
+
+  /* get selected items from gui */
+  QList<QTreeWidgetItem *> selected = ui->treeWidget->selectedItems();
+  int index;
+
+  /* check if at least one is selected */
+  if(selected.length() > 0)
+  {
+    for(int i = 0; i < selected.length();++i)
+    {
+      /* we need to different between nodes and its children */
+      /* is this particular reference known in topic list */
+      if(topicList.contains(selected.at(i)))
+      {
+        index = topicList.indexOf(selected.at(i));
+      }
+      /* is a regular child */
+      else
+      {
+        index = topicList.indexOf(selected.at(i)->parent());
+      }
+    }
+  }
+
+
   mark_dialog xml_dialog(this,
                          &topicList,
                          &responsibleList,
-                         false);
+                         false,
+                         index);
 
   if(xml_dialog.exec() == QDialog::Accepted)
   {
@@ -136,23 +162,32 @@ void MainWindow::add_test_content()
 void MainWindow::remove(QList<QTreeWidgetItem *> *topicList_c,
                         QTreeWidget *tree)
 {
+  /* get selected items from gui */
   QList<QTreeWidgetItem *> selected = tree->selectedItems();
 
+  /* check if at least one is selected */
   if(selected.length() > 0)
   {
     for(int i = 0; i < selected.length();++i)
     {
+      /* we need to different between nodes and its children */
+      /* is this particular reference known in topic list */
       if(topicList_c->contains(selected.at(i)))
       {
-       for(int j = 0; j < tree->topLevelItemCount();++j)
-       {
-         if(tree->topLevelItem(j) == selected.at(i))
-         {
-          delete tree->takeTopLevelItem(j);
-         }
-       }
-       topicList_c->removeOne(selected.at(i));
+        /* find corresponding gui entry */
+        for(int j = 0; j < tree->topLevelItemCount();++j)
+        {
+          /* found the corresponding top level item */
+          if(tree->topLevelItem(j) == selected.at(i))
+          {
+            /* remove from gui */
+            delete tree->takeTopLevelItem(j);
+          }
+        }
+        /* remove from list */
+        topicList_c->removeOne(selected.at(i));
       }
+      /* is a regular child */
       else
       {
         selected.at(i)->parent()->removeChild(selected.at(i));
@@ -160,18 +195,6 @@ void MainWindow::remove(QList<QTreeWidgetItem *> *topicList_c,
       }
     }
   }
-
-
-  /*
-  QStringList tmp_list = make_string_list(ref_entry);
-
-  QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList.at(ref_entry.o_topicIndex()), tmp_list);
-  pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags());
-  topicList.at(ref_entry.o_topicIndex())->addChild(pobj_tree_item);
-
-  append_responsible(ref_entry);
-  mark_dialog::copydebug(&ref_entry);
-  */
 }
 
 void MainWindow::on_speichern_clicked()
@@ -205,7 +228,6 @@ void MainWindow::on_speichern_clicked()
     for(int i = 0; i < filters_topic->size(); ++i)
       doc_writer.add_content(filters_topic->at(i), ui->treeWidget, entry::_Titel);
   }
-
 }
 
 void MainWindow::entry_changed(QTreeWidgetItem *item, int column)

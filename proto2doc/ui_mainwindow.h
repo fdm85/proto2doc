@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.2
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -119,7 +119,7 @@ public:
 
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(1060, 10, 82, 571));
+        layoutWidget->setGeometry(QRect(1060, 10, 86, 571));
         verticalLayout_2 = new QVBoxLayout(layoutWidget);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -161,13 +161,15 @@ public:
         horizontalLayout_3->setSizeConstraint(QLayout::SetFixedSize);
         colum_p = new QPushButton(layoutWidget);
         colum_p->setObjectName(QStringLiteral("colum_p"));
-        colum_p->setMaximumSize(QSize(30, 20));
+        colum_p->setMinimumSize(QSize(38, 23));
+        colum_p->setMaximumSize(QSize(38, 23));
 
         horizontalLayout_3->addWidget(colum_p);
 
         colum_m = new QPushButton(layoutWidget);
         colum_m->setObjectName(QStringLiteral("colum_m"));
-        colum_m->setMaximumSize(QSize(30, 20));
+        colum_m->setMinimumSize(QSize(38, 23));
+        colum_m->setMaximumSize(QSize(38, 23));
 
         horizontalLayout_3->addWidget(colum_m);
 

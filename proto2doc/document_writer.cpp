@@ -180,6 +180,7 @@ bool document_writer::open_file(QString file_path)
     output_file.setFileName(file_path);
     result = output_file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
     out = new QTextStream(&output_file);
+    out->setCodec("UTF-8");
   }
   return result;
 }
@@ -188,10 +189,10 @@ entry* document_writer::cast_row(QTreeWidgetItem *item, bool change)
 {
   entry::type_t type_c = entry::str2spec(item->data(entry::_Specifier, Qt::DisplayRole).toString());
 
-  entry* result = new entry(item->data(0,Qt::DisplayRole).toString(),
-                            item->data(1,Qt::DisplayRole).toString(),
-                            QDate::fromString(item->data(2,Qt::DisplayRole).toString(), "dd_MM_yyyy"),
-                            item->data(4,Qt::DisplayRole).toString(),
+  entry* result = new entry(item->data(entry::gui_titel,Qt::DisplayRole).toString(),
+                            item->data(entry::gui_content,Qt::DisplayRole).toString(),
+                            QDate::fromString(item->data(entry::gui_date,Qt::DisplayRole).toString(), "dd_MM_yyyy"),
+                            item->data(entry::gui_responsible,Qt::DisplayRole).toString(),
                             change ? entry::_change : type_c,
                             (item->parent()!=NULL) ? item->parent()->data(entry::_Titel,  Qt::DisplayRole).toString() : item->data(0,Qt::DisplayRole).toString(),
                             -1);

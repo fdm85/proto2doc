@@ -1,4 +1,3 @@
-// PersonDialog.cpp
 #include "xml_dialog.h"
 
 
@@ -7,7 +6,8 @@
 mark_dialog::mark_dialog( QWidget *parent,
                           QList<QTreeWidgetItem *> *topicList,
                           QStringList *responibles,
-                          bool topic_b)
+                          bool topic_b,
+                          int index)
   : QDialog( parent ),
     o_Titel( new QLineEdit() ),
     o_Inhalt( new QTextEdit() ),
@@ -24,6 +24,14 @@ mark_dialog::mark_dialog( QWidget *parent,
   o_Frist_day->setRange( 1, 31 );
   o_Frist_month->setRange( 1, 12);
   o_Frist_year->setRange( 2016, 2020);
+
+  o_Verantwortlich->setEditable(true);
+
+  if(topicList != NULL) for(int i=0; i<topicList->length();++i)
+  {
+    o_Topic_i->addItem(topicList->at(i)->text(0));
+  }
+
   if(topic_b)
   {
     o_specifier->addItem( "_topic" );
@@ -33,25 +41,27 @@ mark_dialog::mark_dialog( QWidget *parent,
     o_specifier->addItem( "_todo" );
     o_specifier->addItem( "_comment" );
     o_specifier->addItem( "_undef" );
+    if(index != -1)
+    {
+      o_Topic_i->setCurrentIndex(index);
+    }
   }
 
-  o_Verantwortlich->setEditable(true);
-
-  if(topicList != NULL) for(int i=0; i<topicList->length();++i)
-  {
-    o_Topic_i->addItem(topicList->at(i)->text(0));
-  }
 
   if(responibles != NULL)
   {
     o_Verantwortlich->addItems(*responibles);
   }
   o_Verantwortlich->addItem("");
+  o_Verantwortlich->setEditable(false);
 
   connect( m_confirmButton, SIGNAL( clicked() ),
            this, SLOT( accept() ) );
-  connect( m_cancelButton, SIGNAL(clicked(bool)),
+  connect( m_cancelButton, SIGNAL(clicked()),
            this, SLOT( reject() ) );
+  connect( o_Verantwortlich,      SIGNAL(currentIndexChanged(int)),
+           this,                  SLOT(edit_responsible(int)),
+           Qt::AutoConnection );
 
   QVBoxLayout *vLayout = new QVBoxLayout( this );
   QFormLayout *fLayout = new QFormLayout();
@@ -77,6 +87,8 @@ mark_dialog::mark_dialog( QWidget *parent,
   {
     o_topicList = topicList;
   }
+
+
 }
 
 
@@ -95,7 +107,10 @@ entry mark_dialog::getEntry() const
   const entry::type_t r_typespec = typespec;
   return entry(o_Titel->text(),
                o_Inhalt->toPlainText(),
-               o_date_acitve->isChecked() ? QDate(o_Frist_year->text().toInt(),o_Frist_month->text().toInt(), o_Frist_day->text().toInt() ) : QDate(),
+               o_date_acitve->isChecked() ? QDate(o_Frist_year->text().toInt(),
+                                                  o_Frist_month->text().toInt(),
+                                                  o_Frist_day->text().toInt() )
+                                          : QDate(),
                o_Verantwortlich->currentText(),
                r_typespec,
                o_Topic_i->currentText(),
@@ -128,4 +143,13 @@ void mark_dialog::copydebug(entry *entry_c)
 
   myDebug::dbg(debug_text);
 
+}
+
+void mark_dialog::edit_responsible(int i)
+{
+  qDebug() << i;
+  /* last one selected means a new name shall be entered */
+  o_Verantwortlich->setEditable( (i == o_Verantwortlich->count() - 1) ?
+                                   true
+                                 : false );
 }

@@ -64,6 +64,7 @@ private:
 
     QStringList make_string_list(entry ref_entry);
     void append_responsible(entry ref_entry);
+    void node_sub_diff(QList<QTreeWidgetItem *> *topicList_c, int i, QTreeWidget *tree, QList<QTreeWidgetItem *> selected);
 };
 
 #endif // MAINWINDOW_H

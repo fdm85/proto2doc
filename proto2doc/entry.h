@@ -30,6 +30,15 @@ public:
     _Topic_Index
   } member_specifier;
 
+  typedef enum
+  {
+    gui_titel = 0,
+    gui_responsible = 1,
+    gui_date = 2,
+    gui_type = 3,
+    gui_content = 4
+  } member_position_gui;
+
 public:
 
 

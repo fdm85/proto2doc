@@ -24,6 +24,7 @@ void myDebug::dbg(QString text)
     return;
 
   QTextStream out(&file);
+  out.setCodec("UTF-8");
   out << text;
 
   qDebug() << text;
