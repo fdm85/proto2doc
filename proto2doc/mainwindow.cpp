@@ -17,24 +17,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
   ui->treeWidget->setColumnCount(5);
   QStringList headers;
-  headers << "Titel" << "Inhalt" << "Verantwortlich" << "Datum/Frist" << "Typ";
+  headers << "Titel" << "Verantwortlich" << "Datum/Frist" << "Typ"  << "Inhalt";
   ui->treeWidget->setHeaderLabels(headers);
-//  add_test_content();
+    add_test_content();
 }
-
-
 
 MainWindow::~MainWindow()
 {
   delete ui;
 }
 
-
-
-void MainWindow::on_add_point_clicked()
+void MainWindow::on_add_Sub_clicked()
 {
   entry ref_entry;
-  mark_dialog xml_dialog(this, &topicList);
+  mark_dialog xml_dialog(this,
+                         &topicList,
+                         &responsibleList,
+                         false);
+
   if(xml_dialog.exec() == QDialog::Accepted)
   {
     ref_entry = xml_dialog.getEntry();
@@ -48,9 +48,12 @@ void MainWindow::on_add_point_clicked()
 
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_addTopic_clicked()
 {
-  mark_dialog xml_dialog(this);
+  mark_dialog xml_dialog(this,
+                         NULL,
+                         &responsibleList,
+                         true);
   entry ref_entry;
   if(xml_dialog.exec() == QDialog::Accepted)
   {
@@ -65,41 +68,47 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
-void MainWindow::add_topic(entry ref_entry)
+QStringList MainWindow::make_string_list(entry ref_entry)
 {
   QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich()
-           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  tmp_list << ref_entry.o_Titel() << ref_entry.o_Verantwortlich()
+           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier())
+           << ref_entry.o_Inhalt();
 
-  topicList.append(new QTreeWidgetItem( ui->treeWidget, tmp_list));
+  return tmp_list;
+}
 
-  entry* tmp_entry = new entry( QString("undef"), QString("undef") ,
-                                QDate(), ref_entry.o_Verantwortlich(),
-                                entry::_undef, QString("undef"),
-                                -1);
-
+void MainWindow::append_responsible(entry ref_entry)
+{
   if(!responsibleList.contains(ref_entry.o_Verantwortlich()))
   {
     responsibleList.append(ref_entry.o_Verantwortlich());
   }
+}
 
+void MainWindow::add_topic(entry ref_entry)
+{
+  QStringList tmp_list = make_string_list(ref_entry);
+
+  QTreeWidgetItem *pobj_tree_node = new QTreeWidgetItem( ui->treeWidget, tmp_list);
+  pobj_tree_node->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled
+                           | Qt::ItemIsSelectable);
+
+  topicList.append(pobj_tree_node);
+
+  append_responsible(ref_entry);
   mark_dialog::copydebug(&ref_entry);
 }
 
 void MainWindow::add_sub(entry ref_entry)
 {
-  QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich()
-           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  QStringList tmp_list = make_string_list(ref_entry);
 
   QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList.at(ref_entry.o_topicIndex()), tmp_list);
-  pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags() | Qt::ItemIsEditable);
+  pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags());
   topicList.at(ref_entry.o_topicIndex())->addChild(pobj_tree_item);
 
-  if(!responsibleList.contains(ref_entry.o_Verantwortlich()))
-  {
-    responsibleList.append(ref_entry.o_Verantwortlich());
-  }
+  append_responsible(ref_entry);
   mark_dialog::copydebug(&ref_entry);
 }
 

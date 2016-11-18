@@ -33,8 +33,8 @@ public:
 
 
 private slots:
-    void on_add_point_clicked();
-    void on_pushButton_clicked();
+    void on_add_Sub_clicked();
+    void on_addTopic_clicked();
     void on_speichern_clicked();
     void entry_changed(QTreeWidgetItem *, int);
     void on_dump_clicked();
@@ -60,6 +60,8 @@ private:
     local_xml_content content;
     QString filename;
 
+    QStringList make_string_list(entry ref_entry);
+    void append_responsible(entry ref_entry);
 };
 
 #endif // MAINWINDOW_H

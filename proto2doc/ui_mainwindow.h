@@ -43,8 +43,8 @@ public:
     QTableWidget *tableWidget;
     QWidget *layoutWidget;
     QVBoxLayout *verticalLayout_2;
-    QPushButton *pushButton;
-    QPushButton *add_point;
+    QPushButton *addTopic;
+    QPushButton *add_Sub;
     QPushButton *notes;
     QPushButton *schichten;
     QHBoxLayout *horizontalLayout_3;
@@ -125,17 +125,17 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setSizeConstraint(QLayout::SetFixedSize);
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        pushButton = new QPushButton(layoutWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setMaximumSize(QSize(80, 16777215));
+        addTopic = new QPushButton(layoutWidget);
+        addTopic->setObjectName(QStringLiteral("addTopic"));
+        addTopic->setMaximumSize(QSize(80, 16777215));
 
-        verticalLayout_2->addWidget(pushButton);
+        verticalLayout_2->addWidget(addTopic);
 
-        add_point = new QPushButton(layoutWidget);
-        add_point->setObjectName(QStringLiteral("add_point"));
-        add_point->setMaximumSize(QSize(80, 16777215));
+        add_Sub = new QPushButton(layoutWidget);
+        add_Sub->setObjectName(QStringLiteral("add_Sub"));
+        add_Sub->setMaximumSize(QSize(80, 16777215));
 
-        verticalLayout_2->addWidget(add_point);
+        verticalLayout_2->addWidget(add_Sub);
 
         notes = new QPushButton(layoutWidget);
         notes->setObjectName(QStringLiteral("notes"));
@@ -229,8 +229,8 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(4, QApplication::translate("MainWindow", "5", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Topic", 0));
-        add_point->setText(QApplication::translate("MainWindow", "Sub", 0));
+        addTopic->setText(QApplication::translate("MainWindow", "Topic", 0));
+        add_Sub->setText(QApplication::translate("MainWindow", "Sub", 0));
         notes->setText(QApplication::translate("MainWindow", "Notes", 0));
         schichten->setText(QApplication::translate("MainWindow", "Schichten", 0));
         colum_p->setText(QApplication::translate("MainWindow", "+", 0));

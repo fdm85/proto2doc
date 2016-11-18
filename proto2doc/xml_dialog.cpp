@@ -4,11 +4,14 @@
 
 
 
-mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
+mark_dialog::mark_dialog( QWidget *parent,
+                          QList<QTreeWidgetItem *> *topicList,
+                          QStringList *responibles,
+                          bool topic_b)
   : QDialog( parent ),
     o_Titel( new QLineEdit() ),
     o_Inhalt( new QTextEdit() ),
-    o_Verantwortlich( new QLineEdit() ),
+    o_Verantwortlich( new QComboBox() ),
     o_specifier( new QComboBox() ),
     o_Topic_i( new QComboBox() ),
     o_Frist_day(new QSpinBox() ),
@@ -21,16 +24,29 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
   o_Frist_day->setRange( 1, 31 );
   o_Frist_month->setRange( 1, 12);
   o_Frist_year->setRange( 2016, 2020);
-  o_specifier->addItem( "_topic" );
-  o_specifier->addItem( "_todo" );
-  o_specifier->addItem( "_comment" );
-  o_specifier->addItem( "_undef" );
+  if(topic_b)
+  {
+    o_specifier->addItem( "_topic" );
+  }
+  else
+  {
+    o_specifier->addItem( "_todo" );
+    o_specifier->addItem( "_comment" );
+    o_specifier->addItem( "_undef" );
+  }
 
+  o_Verantwortlich->setEditable(true);
 
   if(topicList != NULL) for(int i=0; i<topicList->length();++i)
   {
     o_Topic_i->addItem(topicList->at(i)->text(0));
   }
+
+  if(responibles != NULL)
+  {
+    o_Verantwortlich->addItems(*responibles);
+  }
+  o_Verantwortlich->addItem("");
 
   connect( m_confirmButton, SIGNAL( clicked() ),
            this, SLOT( accept() ) );
@@ -49,6 +65,7 @@ mark_dialog::mark_dialog( QWidget *parent, QList<QTreeWidgetItem *> *topicList )
   fLayout->addRow( "Inhalt:", o_Inhalt );
   fLayout->addRow( "Frist/Datum:", date);
   fLayout->addRow( "Specifier:", o_specifier );
+  fLayout->addRow( "Verantwortlich", o_Verantwortlich );
   vLayout->addLayout( fLayout );
   QHBoxLayout *hLayout = new QHBoxLayout();
   hLayout->addStretch();
@@ -79,7 +96,7 @@ entry mark_dialog::getEntry() const
   return entry(o_Titel->text(),
                o_Inhalt->toPlainText(),
                o_date_acitve->isChecked() ? QDate(o_Frist_year->text().toInt(),o_Frist_month->text().toInt(), o_Frist_day->text().toInt() ) : QDate(),
-               o_Verantwortlich->text(),
+               o_Verantwortlich->currentText(),
                r_typespec,
                o_Topic_i->currentText(),
                o_Topic_i->currentIndex() );

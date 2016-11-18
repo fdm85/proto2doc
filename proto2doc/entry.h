@@ -22,10 +22,10 @@ public:
   typedef enum
   {
     _Titel = 0,
-    _Inhalt = 1,
-    _Verantwortlich = 2,
-    _Frist = 3,
-    _Specifier = 4,
+    _Verantwortlich = 1,
+    _Frist = 2,
+    _Specifier = 3,
+    _Inhalt = 4,
     _Topic,
     _Topic_Index
   } member_specifier;

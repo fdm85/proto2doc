@@ -7,3 +7,5 @@ Check_all button im SpeicherDialog
 Buttons ausblenden wenn Ansicht gewechselt
 topic wird immer als toDo gespeichert
 restore Funktion kann keine Zeilenumbrüche und tabs ab
+Datei im UTF8 Format speichern
+wenn sub dann kein topic als specifier zulassen

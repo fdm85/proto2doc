@@ -133,7 +133,7 @@
       <enum>QLayout::SetFixedSize</enum>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addTopic">
        <property name="maximumSize">
         <size>
          <width>80</width>
@@ -146,7 +146,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="add_point">
+      <widget class="QPushButton" name="add_Sub">
        <property name="maximumSize">
         <size>
          <width>80</width>
