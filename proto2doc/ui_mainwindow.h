@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.7.0
+** Created by: Qt User Interface Compiler version 5.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -45,6 +45,7 @@ public:
     QVBoxLayout *verticalLayout_2;
     QPushButton *addTopic;
     QPushButton *add_Sub;
+    QPushButton *delete_content;
     QPushButton *notes;
     QPushButton *schichten;
     QHBoxLayout *horizontalLayout_3;
@@ -136,6 +137,11 @@ public:
         add_Sub->setMaximumSize(QSize(80, 16777215));
 
         verticalLayout_2->addWidget(add_Sub);
+
+        delete_content = new QPushButton(layoutWidget);
+        delete_content->setObjectName(QStringLiteral("delete_content"));
+
+        verticalLayout_2->addWidget(delete_content);
 
         notes = new QPushButton(layoutWidget);
         notes->setObjectName(QStringLiteral("notes"));
@@ -231,6 +237,7 @@ public:
         ___qtreewidgetitem->setText(4, QApplication::translate("MainWindow", "5", 0));
         addTopic->setText(QApplication::translate("MainWindow", "Topic", 0));
         add_Sub->setText(QApplication::translate("MainWindow", "Sub", 0));
+        delete_content->setText(QApplication::translate("MainWindow", "Delete", 0));
         notes->setText(QApplication::translate("MainWindow", "Notes", 0));
         schichten->setText(QApplication::translate("MainWindow", "Schichten", 0));
         colum_p->setText(QApplication::translate("MainWindow", "+", 0));

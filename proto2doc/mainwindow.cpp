@@ -94,6 +94,8 @@ void MainWindow::add_topic(entry ref_entry)
   pobj_tree_node->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled
                            | Qt::ItemIsSelectable);
 
+  ui->treeWidget->addTopLevelItem(pobj_tree_node);
+
   topicList.append(pobj_tree_node);
 
   append_responsible(ref_entry);
@@ -129,6 +131,47 @@ void MainWindow::add_test_content()
   add_sub(new_sub2);
   add_sub(new_sub3);
   add_sub(new_sub4);
+}
+
+void MainWindow::remove(QList<QTreeWidgetItem *> *topicList_c,
+                        QTreeWidget *tree)
+{
+  QList<QTreeWidgetItem *> selected = tree->selectedItems();
+
+  if(selected.length() > 0)
+  {
+    for(int i = 0; i < selected.length();++i)
+    {
+      if(topicList_c->contains(selected.at(i)))
+      {
+       for(int j = 0; j < tree->topLevelItemCount();++j)
+       {
+         if(tree->topLevelItem(j) == selected.at(i))
+         {
+          delete tree->takeTopLevelItem(j);
+         }
+       }
+       topicList_c->removeOne(selected.at(i));
+      }
+      else
+      {
+        selected.at(i)->parent()->removeChild(selected.at(i));
+        delete selected.at(i);
+      }
+    }
+  }
+
+
+  /*
+  QStringList tmp_list = make_string_list(ref_entry);
+
+  QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList.at(ref_entry.o_topicIndex()), tmp_list);
+  pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags());
+  topicList.at(ref_entry.o_topicIndex())->addChild(pobj_tree_item);
+
+  append_responsible(ref_entry);
+  mark_dialog::copydebug(&ref_entry);
+  */
 }
 
 void MainWindow::on_speichern_clicked()
@@ -254,4 +297,10 @@ void MainWindow::on_row_m_clicked()
 void MainWindow::on_row_p_clicked()
 {
   ui->tableWidget->setRowCount(ui->tableWidget->rowCount() + 1);
+}
+
+void MainWindow::on_delete_content_clicked()
+{
+  remove(&topicList,
+         ui->treeWidget);
 }

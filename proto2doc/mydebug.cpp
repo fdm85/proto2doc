@@ -26,5 +26,7 @@ void myDebug::dbg(QString text)
   QTextStream out(&file);
   out << text;
 
+  qDebug() << text;
+
   file.close();
 }

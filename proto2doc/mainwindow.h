@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "local_xml_content.h"
 #include "xml_dialog.h"
 #include "entry.h"
 #include "select_dialog.h"
@@ -48,16 +47,19 @@ private slots:
 
     void on_row_p_clicked();
 
+    void on_delete_content_clicked();
+
 private:
     void add_topic(entry);
     void add_sub(entry);
     void add_test_content();
+    void remove(QList<QTreeWidgetItem *> *topicList_c,
+                QTreeWidget *tree);
 
     QList<QTreeWidgetItem *> topicList;
     QStringList responsibleList;
     QTreeWidget *topNode;
     Ui::MainWindow *ui;
-    local_xml_content content;
     QString filename;
 
     QStringList make_string_list(entry ref_entry);

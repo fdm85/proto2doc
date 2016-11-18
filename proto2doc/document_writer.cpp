@@ -190,8 +190,8 @@ entry* document_writer::cast_row(QTreeWidgetItem *item, bool change)
 
   entry* result = new entry(item->data(0,Qt::DisplayRole).toString(),
                             item->data(1,Qt::DisplayRole).toString(),
-                            QDate::fromString(item->data(3,Qt::DisplayRole).toString(), "dd_MM_yyyy"),
-                            item->data(2,Qt::DisplayRole).toString(),
+                            QDate::fromString(item->data(2,Qt::DisplayRole).toString(), "dd_MM_yyyy"),
+                            item->data(4,Qt::DisplayRole).toString(),
                             change ? entry::_change : type_c,
                             (item->parent()!=NULL) ? item->parent()->data(entry::_Titel,  Qt::DisplayRole).toString() : item->data(0,Qt::DisplayRole).toString(),
                             -1);

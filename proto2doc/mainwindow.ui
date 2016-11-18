@@ -159,6 +159,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="delete_content">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="notes">
        <property name="maximumSize">
         <size>
