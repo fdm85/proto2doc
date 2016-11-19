@@ -17,6 +17,7 @@
 #include <QTextEdit>
 #include <QCheckBox>
 #include <QTreeWidgetItem>
+#include <QObject>
 
 /*
 class QLineEdit;
@@ -26,14 +27,15 @@ class QPushButton;
 */
 class mark_dialog : public QDialog
 {
-
+  Q_OBJECT
   //typedef struct
 
 public:
   mark_dialog( QWidget *parent = NULL,
                QList<QTreeWidgetItem *> *topicList = NULL,
                QStringList *responibles = NULL,
-               bool topic_b = true);
+               bool topic_b = true,
+               int index = -1);
   entry getEntry() const;
   static void copydebug(entry *entry);
 
@@ -49,7 +51,8 @@ private:
   QList<QTreeWidgetItem *> *o_topicList;
 
 private slots:
-  void mark_topic(int);
+  void edit_responsible(int);
+
 
 
 
