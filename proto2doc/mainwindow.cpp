@@ -94,16 +94,6 @@ void MainWindow::on_addTopic_clicked()
 
 }
 
-QStringList MainWindow::make_string_list(entry ref_entry)
-{
-  QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Verantwortlich()
-           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier())
-           << ref_entry.o_Inhalt();
-
-  return tmp_list;
-}
-
 void MainWindow::append_responsible(entry ref_entry)
 {
   if(!responsibleList.contains(ref_entry.o_Verantwortlich()))
@@ -114,7 +104,7 @@ void MainWindow::append_responsible(entry ref_entry)
 
 void MainWindow::add_topic(entry ref_entry)
 {
-  QStringList tmp_list = make_string_list(ref_entry);
+  QStringList tmp_list = gui_tools::make_string_list(ref_entry);
 
   QTreeWidgetItem *pobj_tree_node = new QTreeWidgetItem( ui->treeWidget, tmp_list);
   pobj_tree_node->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled
@@ -130,7 +120,7 @@ void MainWindow::add_topic(entry ref_entry)
 
 void MainWindow::add_sub(entry ref_entry)
 {
-  QStringList tmp_list = make_string_list(ref_entry);
+  QStringList tmp_list = gui_tools::make_string_list(ref_entry);
 
   QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList.at(ref_entry.o_topicIndex()), tmp_list);
   pobj_tree_item->setFlags(topicList.at(ref_entry.o_topicIndex())->flags());

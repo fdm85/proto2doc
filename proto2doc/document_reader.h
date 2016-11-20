@@ -9,6 +9,7 @@
 #include <QDate>
 #include "entry.h"
 #include "xml_dialog.h"
+#include "gui_tools.h"
 
 class document_reader : public QObject
 {

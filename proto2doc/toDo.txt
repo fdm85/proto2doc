@@ -1,6 +1,11 @@
-Datum editierbar bei topic
-Verantwortlicher fehlt
-Check_all button im SpeicherDialog
-Buttons ausblenden wenn Ansicht gewechselt
-restore Funktion kann keine Zeilenumbrüche und tabs ab
-Datei im UTF8 Format speichern
+Bugs und UseCases_
+	Datum editierbar bei topic
+	Verantwortlicher fehlt
+	Check_all button im SpeicherDialog
+	Buttons ausblenden wenn Ansicht gewechselt
+	restore Funktion kann keine Zeilenumbrüche und tabs ab
+	Datei im UTF8 Format speichern (erledigt?)
+	restore falsche zuteilung der spalten nach letztem update da die GUI Anordnung verändert wurde
+	
+System Improvements
+	identische Anteile aus mainwindow und document_reader in basis schieben

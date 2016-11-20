@@ -6,6 +6,7 @@
 #include "select_dialog.h"
 #include "document_writer.h"
 #include "document_reader.h"
+#include "gui_tools.h"
 #include <QMainWindow>
 #include <QTreeWidget>
 #include <QDebug>
@@ -62,7 +63,6 @@ private:
     Ui::MainWindow *ui;
     QString filename;
 
-    QStringList make_string_list(entry ref_entry);
     void append_responsible(entry ref_entry);
     void node_sub_diff(QList<QTreeWidgetItem *> *topicList_c, int i, QTreeWidget *tree, QList<QTreeWidgetItem *> selected);
 };

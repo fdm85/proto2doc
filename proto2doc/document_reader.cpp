@@ -12,30 +12,40 @@ document_reader::document_reader(QObject *parent,
 
 }
 
+/* public funtction to import a file */
 void document_reader::read_document(QString filename)
 {
+  /* check if file exists and paramtere valid check */
   if( !QFile(filename).exists()
       || treeWidget == NULL
       || topicList == NULL
       || responsibleList == NULL )
   {
+    /* something is invalid */
     return;
   }
 
   QFile file(filename);
 
+  /* try to pen file */
   if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     return;
   }
 
+  /* set up temporary stuff */
   myDebug::dbg(QString("Importing DUMP\n"));
   QTextStream in(&file);
+
+  /* proccess content line by line */
   while (!in.atEnd())
   {
+    /* read line from file */
     QString line = in.readLine();
+    /* cast text into something this programm can interpret */
     process_line(line);
   }
+  /* collect some meta data for later debbuging */
   myDebug::dbg(QString("Done DUMP\n"));
 }
 
@@ -140,16 +150,20 @@ void document_reader::process_line(QString line)
 
 void document_reader::add_topic(entry ref_entry)
 {
-  QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich()
-           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  /* cast the content from ref_entry to something the gui can process
+   * a list of cell contents */
+  QStringList tmp_list = gui_tools::make_string_list(ref_entry);
 
+  /* on import we need to refresh/rebuild the meta-data collection
+   * of topics */
   topicList->append(new QTreeWidgetItem(treeWidget, tmp_list));
 
+  /* simulate topic import just like a regular user would cause */
   entry* tmp_entry = new entry( QString("undef"), QString("undef") ,
                                 QDate(), ref_entry.o_Verantwortlich(),
                                 entry::_undef, QString("undef"),
                                 -1);
+
 
   if(!responsibleList->contains(ref_entry.o_Verantwortlich()))
   {
@@ -161,9 +175,9 @@ void document_reader::add_topic(entry ref_entry)
 
 void document_reader::add_sub(entry ref_entry)
 {
-  QStringList tmp_list;
-  tmp_list << ref_entry.o_Titel() << ref_entry.o_Inhalt() << ref_entry.o_Verantwortlich()
-           << ref_entry.o_Frist().toString("dd_MM_yyyy") << entry::spec2str(ref_entry.o_specifier());
+  /* cast the content from ref_entry to something the gui can process
+   * a list of cell contents */
+  QStringList tmp_list = gui_tools::make_string_list(ref_entry);
 
   QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList->last(), tmp_list);
   pobj_tree_item->setFlags(topicList->last()->flags() | Qt::ItemIsEditable);
