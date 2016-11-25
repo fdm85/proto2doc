@@ -50,45 +50,45 @@ void document_reader::read_document(QString filename)
 
     /* as long as at least one delimiter is not found
      * a complete set is not found */
-    while(  (start == -1)
-            && (end == -1)
+    while(  (start > 0)
+            && (end > 0)
             && !in.atEnd())
     {
       /* clear vars */
       lineFromFile.clear();
       lineFromFile = in.readLine();
 
-      if( lineFromFile.contains("-Titel: ") )
+      if( lineFromFile.contains("# Titel: ") )
       {
-        linesContentOnly.append("-Titel: ");
+        linesContentOnly.append("# Titel: ");
         found_content = true;
       }
 
-      else if(linesContentOnly.contains("-Datum: "))
+      else if(lineFromFile.contains("-Datum: "))
       {
         linesContentOnly.append("-Datum: ");
         found_content = true;
       }
 
-      else if(linesContentOnly.contains("-Verantwortlich: "))
+      else if(lineFromFile.contains("-Verantwortlich: "))
       {
         linesContentOnly.append("-Verantwortlich: ");
         found_content = true;
       }
 
-      else if(linesContentOnly.contains("-Typ: "))
+      else if(lineFromFile.contains("-Typ: "))
       {
         linesContentOnly.append("-Typ: ");
         found_content = true;
       }
 
-      else if(linesContentOnly.contains("-Inhalt: "))
+      else if(lineFromFile.contains("-Inhalt: "))
       {
         linesContentOnly.append("-Inhalt: ");
         found_content = true;
       }
 
-      else if(linesContentOnly.contains("-Topic: "))
+      else if(lineFromFile.contains("-Topic: "))
       {
         linesContentOnly.append("-Topic: ");
         found_content = true;
@@ -97,7 +97,6 @@ void document_reader::read_document(QString filename)
       {
         /* if line is not empty refresh delimiters and get content text*/
         linesContentOnly.append(resolve_delimiters(lineFromFile));
-        found_content = true;
       }
     }
     /* cast text into something this programm can interpret */
@@ -150,7 +149,7 @@ QString document_reader::resolve_delimiters(QString line)
 void document_reader::process_line(QStringList lines)
 {
 
-  if(lines.contains("Titel: "))
+  if(lines.contains("# Titel: "))
   {
     lines.removeFirst();
     tmp_entry.titel = lines.join("|");
