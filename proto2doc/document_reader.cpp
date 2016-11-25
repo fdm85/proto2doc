@@ -12,7 +12,7 @@ document_reader::document_reader(QObject *parent,
 
 }
 
-/* public funtction to import a file */
+/* public function to import a file */
 void document_reader::read_document(QString filename)
 {
   /* check if file exists and paramtere valid check */
@@ -40,10 +40,70 @@ void document_reader::read_document(QString filename)
   /* proccess content line by line */
   while (!in.atEnd())
   {
-    /* read line from file */
-    QString line = in.readLine();
+    start = -1;
+    end = -1;
+    length = 0;
+    /* read lines from file for a complete set of < ... > */
+    QString lineFromFile;
+    QStringList linesContentOnly;
+    bool found_content = false;
+
+    /* as long as at least one delimiter is not found
+     * a complete set is not found */
+    while(  (start == -1)
+            && (end == -1)
+            && !in.atEnd())
+    {
+      /* clear vars */
+      lineFromFile.clear();
+      lineFromFile = in.readLine();
+
+      if( lineFromFile.contains("-Titel: ") )
+      {
+        linesContentOnly.append("-Titel: ");
+        found_content = true;
+      }
+
+      else if(linesContentOnly.contains("-Datum: "))
+      {
+        linesContentOnly.append("-Datum: ");
+        found_content = true;
+      }
+
+      else if(linesContentOnly.contains("-Verantwortlich: "))
+      {
+        linesContentOnly.append("-Verantwortlich: ");
+        found_content = true;
+      }
+
+      else if(linesContentOnly.contains("-Typ: "))
+      {
+        linesContentOnly.append("-Typ: ");
+        found_content = true;
+      }
+
+      else if(linesContentOnly.contains("-Inhalt: "))
+      {
+        linesContentOnly.append("-Inhalt: ");
+        found_content = true;
+      }
+
+      else if(linesContentOnly.contains("-Topic: "))
+      {
+        linesContentOnly.append("-Topic: ");
+        found_content = true;
+      }
+      if(found_content == true)
+      {
+        /* if line is not empty refresh delimiters and get content text*/
+        linesContentOnly.append(resolve_delimiters(lineFromFile));
+        found_content = true;
+      }
+    }
     /* cast text into something this programm can interpret */
-    process_line(line);
+    process_line(linesContentOnly);
+    found_content = false;
+    linesContentOnly.clear();
   }
   /* collect some meta data for later debbuging */
   myDebug::dbg(QString("Done DUMP\n"));
@@ -52,97 +112,93 @@ void document_reader::read_document(QString filename)
 entry document_reader::cast_tmp_entry(document_reader::temp_entry_t tmp_entry_c)
 {
   return entry(tmp_entry_c.titel,
-                   tmp_entry_c.inhalt,
-                   QDate::fromString(tmp_entry_c.datum, "dd_MM_yyyy"),
-                   tmp_entry_c.verantwortlich,
-                   entry::str2spec(tmp_entry_c.typ),
-                   tmp_entry_c.topic,
-                   -1);
+               tmp_entry_c.inhalt,
+               QDate::fromString(tmp_entry_c.datum, "dd_MM_yyyy"),
+               tmp_entry_c.verantwortlich,
+               entry::str2spec(tmp_entry_c.typ),
+               tmp_entry_c.topic,
+               -1);
 }
 
-void document_reader::process_line(QString line)
+QString document_reader::resolve_delimiters(QString line)
 {
-  int start, length;
-  line.remove("\n").remove("\r").remove("\t");
-  if(line.contains("Titel: "))
+  if(start == -1)
   {
     start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.titel = line.mid(start + 1, length - 1);
-    }
+  }
+  if(end == -1)
+  {
+    end = line.indexOf(">") -1;
   }
 
-  else if(line.contains("-Datum: "))
+  /* only found the < beginning or multiline */
+  if(end == -1 )
   {
-    start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.datum = line.mid(start + 1, length - 1);
-    }
+    /* get the whole line */
+    length = line.length() -1;
+  }
+  /* found either < ... > or last of a multiline ending with > */
+  else
+  {
+    /* get the line excluding the delimiter */
+    length = (end - start);
   }
 
-  else if(line.contains("-Verantwortlich: "))
+  return line.mid(start + 1, length );
+}
+
+void document_reader::process_line(QStringList lines)
+{
+
+  if(lines.contains("Titel: "))
   {
-    start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.verantwortlich = line.mid(start + 1, length - 1);
-    }
+    lines.removeFirst();
+    tmp_entry.titel = lines.join("|");
   }
 
-  else if(line.contains("-Typ: "))
+  else if(lines.contains("-Datum: "))
   {
-    start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.typ = line.mid(start + 1, length - 1);
-    }
+    lines.removeFirst();
+    tmp_entry.datum = lines.join("");
   }
 
-  else if(line.contains("-Inhalt: "))
+  else if(lines.contains("-Verantwortlich: "))
   {
-    start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.inhalt = line.mid(start + 1, length - 1);
-    }
+    lines.removeFirst();
+    tmp_entry.verantwortlich = lines.join("|");
   }
 
-  else if(line.contains("-Topic: "))
+  else if(lines.contains("-Typ: "))
   {
-    start = line.indexOf("<");
-    length = line.indexOf(">");
-    if(start != -1 && length != -1)
-    {
-      length = line.indexOf(">") - line.indexOf("<");
-      tmp_entry.topic = line.mid(start + 1, length - 1);
+    lines.removeFirst();
+    tmp_entry.typ = lines.join("|");
+  }
 
-      entry entry_c = cast_tmp_entry(tmp_entry);
-      if(entry_c.o_specifier() == entry::_topic)
-      {
-        add_topic(entry_c);
-        tmp_entry.datum.clear();
-        tmp_entry.inhalt.clear();
-        tmp_entry.titel.clear();
-        tmp_entry.topic.clear();
-        tmp_entry.typ.clear();
-        tmp_entry.verantwortlich.clear();
-      }
-      else
-      {
-        add_sub(entry_c);
-      }
+  else if(lines.contains("-Inhalt: "))
+  {
+    lines.removeFirst();
+    tmp_entry.inhalt = lines.join("\r\n");
+  }
+
+  else if(lines.contains("-Topic: "))
+  {
+    lines.removeFirst();
+    tmp_entry.topic = lines.join("|");
+
+    entry entry_c = cast_tmp_entry(tmp_entry);
+    if(entry_c.o_specifier() == entry::_topic)
+    {
+      add_topic(entry_c);
+      tmp_entry.datum.clear();
+      tmp_entry.inhalt.clear();
+      tmp_entry.titel.clear();
+      tmp_entry.topic.clear();
+      tmp_entry.typ.clear();
+      tmp_entry.verantwortlich.clear();
+    }
+    else
+    {
+      add_sub(entry_c);
     }
   }
 }
@@ -179,7 +235,19 @@ void document_reader::add_sub(entry ref_entry)
    * a list of cell contents */
   QStringList tmp_list = gui_tools::make_string_list(ref_entry);
 
-  QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList->last(), tmp_list);
+  /* get corresponding parent node */
+  for(int i = 0; i < topicList->length(); ++i)
+  {
+    if( topicList->at(i)->data(0,0).toString() == ref_entry.o_Topic())
+    {
+      ref_entry.setTopic_index(i);
+    }
+  }
+
+  /* toDo implement a else case when no corresponding topic is found */
+
+  QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList->at(ref_entry.o_topicIndex()),
+                                                        tmp_list);
   pobj_tree_item->setFlags(topicList->last()->flags() | Qt::ItemIsEditable);
   topicList->last()->addChild(pobj_tree_item);
 

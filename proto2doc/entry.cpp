@@ -18,4 +18,9 @@ bool entry::operator ==(entry const& other)
     return false;
 }
 
+void entry::setTopic_index(int value)
+{
+    topic_index = value;
+}
+
 

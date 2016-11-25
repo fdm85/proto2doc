@@ -290,6 +290,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="load">
+       <property name="text">
+        <string>load</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="restore">
        <property name="text">
         <string>restore</string>
@@ -312,7 +319,7 @@
      <x>0</x>
      <y>0</y>
      <width>1275</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

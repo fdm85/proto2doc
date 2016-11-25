@@ -1,2 +1,4 @@
 *.o
 build-proto2doc-Desktop_Qt_5_4_0_MinGW_32bit-Debug/
+proto2doc/proto2doc/debug
+proto2doc/proto2doc/release

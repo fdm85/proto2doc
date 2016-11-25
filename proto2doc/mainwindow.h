@@ -50,6 +50,8 @@ private slots:
 
     void on_delete_content_clicked();
 
+    void on_load_clicked();
+
 private:
     void add_topic(entry);
     void add_sub(entry);

@@ -261,14 +261,33 @@ void MainWindow::on_clear_clicked()
 
 void MainWindow::on_restore_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                  QStandardPaths::displayName(QStandardPaths::DesktopLocation),
-                                                  tr("Dump (*.dmp)"));
+  /* save last used file path */
+  static QString path;
+  QString fileName;
+
+  /* no load path set yet */
+  if(path.isEmpty())
+  {
+    path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
+  }
+
+  /* do file dialog */
+  fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                          path + filename,
+
+                                          tr("dump (*.dmp)"));
+  /* was dialog aborted? */
   if(fileName.isEmpty())
   {
     return;
   }
 
+  /* get metadata */
+  QFileInfo file(fileName);
+  filename = file.fileName();
+  path = file.filePath();
+
+  /* clear current content */
   ui->treeWidget->clear();
   responsibleList.clear();
   topicList.clear();
@@ -315,4 +334,41 @@ void MainWindow::on_delete_content_clicked()
 {
   remove(&topicList,
          ui->treeWidget);
+}
+
+/* load parts */
+void MainWindow::on_load_clicked()
+{
+  /* save last used file path */
+  static QString path;
+  QString fileName;
+
+  /* no load path set yet */
+  if(path.isEmpty())
+  {
+    path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
+  }
+
+  /* do file dialog */
+  fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                          path,
+
+                                          tr("Textdatei (*.txt)"));
+  /* was dialog aborted? */
+  if(fileName.isEmpty())
+  {
+    return;
+  }
+
+  /* get metadata */
+  QFileInfo file(fileName);
+  filename = file.fileName().prepend("/");
+  path = file.absolutePath();
+
+  document_reader reader(NULL,
+                         ui->treeWidget,
+                         &topicList,
+                         &responsibleList);
+
+  reader.read_document(fileName);
 }

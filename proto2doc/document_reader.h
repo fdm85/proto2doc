@@ -34,18 +34,30 @@ public:
   void read_document(QString filename = QString(""));
 
 
+  void ab(QString line, int length, int end, int start);
+  
 private:
   QTreeWidget *treeWidget;
   QList<QTreeWidgetItem *> *topicList;
   QStringList *responsibleList;
   temp_entry_t tmp_entry;
-
   entry cast_tmp_entry( temp_entry_t tmp_entry_c);
 
+  /* line casting */
+  int start, length, end;
+  entry::member_specifier lastEntry;
 
-  void process_line(QString);
+
+
+
+
+  void process_line(QStringList);
   void add_topic(entry);
   void add_sub(entry);
+  void read_content(QString line, int end, int length, int start);
+  
+  QString resolve_delimiters(QString line);
+  
 signals:
 
 public slots:

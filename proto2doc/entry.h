@@ -39,8 +39,6 @@ public:
     gui_content = 4
   } member_position_gui;
 
-public:
-
 
 
   entry( const QString& o_Titel = "undef", const QString& o_Inhalt = "undef",
@@ -95,6 +93,8 @@ public:
 
 
 
+
+  void setTopic_index(int value);
 
 private:
   QString Titel;

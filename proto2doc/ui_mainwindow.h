@@ -56,6 +56,7 @@ public:
     QSpacerItem *verticalSpacer;
     QPushButton *speichern;
     QPushButton *dump;
+    QPushButton *load;
     QPushButton *restore;
     QPushButton *clear;
     QMenuBar *menuBar;
@@ -202,6 +203,11 @@ public:
 
         verticalLayout_2->addWidget(dump);
 
+        load = new QPushButton(layoutWidget);
+        load->setObjectName(QStringLiteral("load"));
+
+        verticalLayout_2->addWidget(load);
+
         restore = new QPushButton(layoutWidget);
         restore->setObjectName(QStringLiteral("restore"));
 
@@ -215,7 +221,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1275, 21));
+        menuBar->setGeometry(QRect(0, 0, 1275, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -248,6 +254,7 @@ public:
         row_m->setText(QApplication::translate("MainWindow", "-", 0));
         speichern->setText(QApplication::translate("MainWindow", "save", 0));
         dump->setText(QApplication::translate("MainWindow", "dump", 0));
+        load->setText(QApplication::translate("MainWindow", "load", 0));
         restore->setText(QApplication::translate("MainWindow", "restore", 0));
         clear->setText(QApplication::translate("MainWindow", "clear", 0));
     } // retranslateUi
