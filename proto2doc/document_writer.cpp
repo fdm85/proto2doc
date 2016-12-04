@@ -152,9 +152,27 @@ void document_writer::write_entry(entry *entry_c)
   text.append("\t").append("-Datum: ").append("<").append(datum).append(">").append("\n");
   text.append("\t").append("-Verantwortlich: ").append("<").append(entry_c->o_Verantwortlich()).append(">").append("\n");
   text.append("\t").append("-Typ: ").append("<").append(entry::spec2str(entry_c->o_specifier())).append(">").append("\n");
-  text.append("\t").append("-Inhalt: ").append("<").append(entry_c->o_Inhalt()).append(">").append("\n");
-  text.append("\t").append("-Topic: ").append("<").append(entry_c->o_Topic()).append(">").append("\n\n");
+  text.append("\t").append("-Topic: ").append("<").append(entry_c->o_Topic()).append(">").append("\n");
 
+  /* content may be composed of several lines */
+  QString tmp_string = "\t-Inhalt: <";
+  text.append(tmp_string);
+  if(entry_c->o_Inhalt().contains("\n"))
+  {
+    int start = tmp_string.length();
+    QStringList tmp_list = entry_c->o_Inhalt().split("\n");
+    for(int i = 0; i < tmp_list.length(); ++i)
+    { /* TODO finish this one here */
+      text.append("\t").append(" ", start);
+    }
+  }
+  else
+  {
+    text.append(entry_c->o_Inhalt()).append(">").append("\n");
+  }
+
+  /* add a final line feed */
+  text.append("\n");
 
   *out << text;
   out->flush();

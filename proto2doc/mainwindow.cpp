@@ -6,9 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
-  myDebug::debug_filename = QDateTime::currentDateTime().toString("hh-mm_-_dd-MM-yyyy").append(".log");
+  QString filename = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm");
+  myDebug::debug_filename = filename.prepend("/inputLog_").append(".log");
 
-  filename = "/" + myDebug::debug_filename.remove(".log").append(".txt");
+  filename.append(".txt");
 
   qDebug()<< myDebug::debug_filename;
   ui->setupUi(this);
@@ -19,7 +20,15 @@ MainWindow::MainWindow(QWidget *parent) :
   QStringList headers;
   headers << "Titel" << "Verantwortlich" << "Datum/Frist" << "Typ"  << "Inhalt";
   ui->treeWidget->setHeaderLabels(headers);
-  add_test_content();
+//  add_test_content();
+
+  qDebug()<< QDir::homePath();
+
+  if(!QDir(QDir::homePath() + "/proto2doc").exists())
+  {
+    QDir().mkdir(QDir::homePath() + "/proto2doc");
+  }
+  QDesktopServices::openUrl(QDir::homePath() + "/proto2doc");
 }
 
 MainWindow::~MainWindow()
@@ -190,7 +199,7 @@ void MainWindow::remove(QList<QTreeWidgetItem *> *topicList_c,
 void MainWindow::on_speichern_clicked()
 {
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                  QStandardPaths::displayName(QStandardPaths::DesktopLocation) + filename,
+                                                  QDir::homePath() + "/proto2doc" + filename,
                                                   tr("Text (*.txt)"));
 
 
@@ -234,7 +243,7 @@ void MainWindow::entry_changed(QTreeWidgetItem *item, int column)
 void MainWindow::on_dump_clicked()
 {
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                  QStandardPaths::displayName(QStandardPaths::DesktopLocation) + "/dump.dmp",
+                                                  QDir::homePath() + "/proto2doc" + "/dump.dmp",
                                                   tr("Dump (*.dmp)"));
 
   qDebug()<< fileName;
@@ -268,7 +277,7 @@ void MainWindow::on_restore_clicked()
   /* no load path set yet */
   if(path.isEmpty())
   {
-    path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
+    path = QDir::homePath() + "/proto2doc";
   }
 
   /* do file dialog */
@@ -346,7 +355,7 @@ void MainWindow::on_load_clicked()
   /* no load path set yet */
   if(path.isEmpty())
   {
-    path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
+    path = QDir::homePath() + "/proto2doc";
   }
 
   /* do file dialog */

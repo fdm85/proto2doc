@@ -6,3 +6,4 @@ proto2doc/proto2doc/release
 *.Debug
 *.Release
 *moc_*.*
+proto2doc/Makefile

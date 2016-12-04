@@ -18,6 +18,7 @@
 #include <QStandardItem>
 #include <QStandardPaths>
 #include <QFileDialog>
+#include <QDesktopServices>
 
 namespace Ui {
 class MainWindow;

@@ -18,8 +18,8 @@ myDebug::~myDebug()
 
 void myDebug::dbg(QString text)
 {
-  QString path = QStandardPaths::displayName(QStandardPaths::DesktopLocation);
-  QFile file(myDebug::debug_filename);
+  QString path = QDir::homePath() + "/proto2doc";
+  QFile file(path + myDebug::debug_filename);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
     return;
 

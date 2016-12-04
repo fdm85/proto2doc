@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QFile>
 #include <QTextStream>
-
+#include <QDir>
 
 class myDebug : public QObject
 {

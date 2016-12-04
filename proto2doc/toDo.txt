@@ -6,6 +6,7 @@ Bugs und UseCases_
 	restore Funktion kann keine Zeilenumbrüche und tabs ab
 	Datei im UTF8 Format speichern (erledigt?)
 	restore falsche zuteilung der spalten nach letztem update da die GUI Anordnung verändert wurde
+	desktop-location funktioniert nicht bei fileSave 
 	
 System Improvements
 	identische Anteile aus mainwindow und document_reader in basis schieben

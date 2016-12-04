@@ -49,10 +49,9 @@ void document_reader::read_document(QString filename)
     bool found_content = false;
 
     /* as long as at least one delimiter is not found
-     * a complete set is not found */
-    while(  (start > 0)
-            && (end > 0)
-            && !in.atEnd())
+     * file is not at the end */
+    while(  ((start < 0) || (end < 0))
+            && !in.atEnd() )
     {
       /* clear vars */
       lineFromFile.clear();
@@ -121,17 +120,19 @@ entry document_reader::cast_tmp_entry(document_reader::temp_entry_t tmp_entry_c)
 
 QString document_reader::resolve_delimiters(QString line)
 {
+  /* try to find the start */
   if(start == -1)
   {
     start = line.indexOf("<");
   }
-  if(end == -1)
+  /* try to find the end and remove > */
+  if( (end == -1) && (line.indexOf(">") != -1) )
   {
     end = line.indexOf(">") -1;
   }
 
   /* only found the < beginning or multiline */
-  if(end == -1 )
+  if(end == -1)
   {
     /* get the whole line */
     length = line.length() -1;
@@ -169,6 +170,7 @@ void document_reader::process_line(QStringList lines)
 
   else if(lines.contains("-Typ: "))
   {
+    /* TODO einrückung mit einbeziehen */
     lines.removeFirst();
     tmp_entry.typ = lines.join("|");
   }
@@ -183,6 +185,9 @@ void document_reader::process_line(QStringList lines)
   {
     lines.removeFirst();
     tmp_entry.topic = lines.join("|");
+
+    /* TODO check for existing entry first and if it is a duplicate,
+     * add to separate list called duplicates or so.... */
 
     entry entry_c = cast_tmp_entry(tmp_entry);
     if(entry_c.o_specifier() == entry::_topic)
@@ -213,11 +218,12 @@ void document_reader::add_topic(entry ref_entry)
    * of topics */
   topicList->append(new QTreeWidgetItem(treeWidget, tmp_list));
 
+  /* TODO clarify what tmp_entry is needed for */
   /* simulate topic import just like a regular user would cause */
   entry* tmp_entry = new entry( QString("undef"), QString("undef") ,
                                 QDate(), ref_entry.o_Verantwortlich(),
                                 entry::_undef, QString("undef"),
-                                -1);
+                                topicList->length() - 1);
 
 
   if(!responsibleList->contains(ref_entry.o_Verantwortlich()))
@@ -233,17 +239,26 @@ void document_reader::add_sub(entry ref_entry)
   /* cast the content from ref_entry to something the gui can process
    * a list of cell contents */
   QStringList tmp_list = gui_tools::make_string_list(ref_entry);
-
+  bool index_found = false;
   /* get corresponding parent node */
   for(int i = 0; i < topicList->length(); ++i)
   {
     if( topicList->at(i)->data(0,0).toString() == ref_entry.o_Topic())
     {
       ref_entry.setTopic_index(i);
+      index_found = true;
     }
   }
 
-  /* toDo implement a else case when no corresponding topic is found */
+  /* no parent node found */
+  if(index_found == false)
+  {
+    /* no parent node? lets cast our imaginary friend into the real */
+    add_topic(entry( ref_entry.o_Topic())); // unspecified details get a default value automatically
+    ref_entry.setTopic_index(topicList->length() - 1);
+  }
+
+  /* TODO implement a else case when no corresponding topic is found */
 
   QTreeWidgetItem *pobj_tree_item = new QTreeWidgetItem(topicList->at(ref_entry.o_topicIndex()),
                                                         tmp_list);
