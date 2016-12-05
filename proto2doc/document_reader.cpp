@@ -37,6 +37,8 @@ void document_reader::read_document(QString filename)
   myDebug::dbg(QString("Importing DUMP\n"));
   QTextStream in(&file);
 
+  in.setCodec("UTF-8");
+
   /* proccess content line by line */
   while (!in.atEnd())
   {

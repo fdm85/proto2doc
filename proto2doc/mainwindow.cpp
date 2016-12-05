@@ -202,6 +202,10 @@ void MainWindow::on_speichern_clicked()
                                                   QDir::homePath() + "/proto2doc" + filename,
                                                   tr("Text (*.txt)"));
 
+  if(QFile(filename).exists())
+  {
+    QFile(fileName).remove();
+  }
 
   select_dialog sele_diag(this, &responsibleList, &topicList);
 
