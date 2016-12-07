@@ -159,17 +159,13 @@ void document_writer::write_entry(entry *entry_c)
   text.append(tmp_string);
   if(entry_c->o_Inhalt().contains("\n"))
   {
+    /* set up a filler for each new line so the will be aligned to the <*/
     QString filler;
-    filler.fill(' ', tmp_string.length());
-    QStringList tmp_list = entry_c->o_Inhalt().split("\n");
-    for(int i = 0; i < tmp_list.length(); ++i)
-    { /* TODO finish this one here */
-      text.append("\t")
-          .append(filler)
-          .append(tmp_list.at(i) + "\n");
-    }
-    text.remove(text.length(),1);
-    text.append(">")
+    filler.fill(' ', tmp_string.length()).prepend("\n");
+
+    /* replace each linefeed with the filler */
+    text.append(entry_c->o_Inhalt()).replace("\n",filler)
+        .append(">")
         .append("\n");
   }
   else
