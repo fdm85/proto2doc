@@ -199,10 +199,13 @@ void MainWindow::remove(QList<QTreeWidgetItem *> *topicList_c,
 void MainWindow::on_speichern_clicked()
 {
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                  QDir::homePath() + "/proto2doc" + filename,
+                                                  QDir::homePath() + "/proto2doc/" + filename,
                                                   tr("Text (*.txt)"));
-
-  if(QFile(filename).exists())
+  if(fileName.isEmpty())
+  {
+    return;
+  }
+  else if(QFile(filename).exists())
   {
     QFile(fileName).remove();
   }
@@ -288,7 +291,7 @@ void MainWindow::on_restore_clicked()
   fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                           path + filename,
 
-                                          tr("dump (*.dmp)"));
+                                          tr("dump (*.dmp);;Text (*.txt)"));
   /* was dialog aborted? */
   if(fileName.isEmpty())
   {

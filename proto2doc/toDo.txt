@@ -1,8 +1,16 @@
-Bugs und UseCases_
-	Check_all button im SpeicherDialog
-	Buttons ausblenden wenn Ansicht gewechselt
+Bugs
+	Specifier wird immer als toDo angezeigt
+	
 	
 System Improvements
 	identische Anteile aus mainwindow und document_reader in basis schieben
 	GUI bei mehrzeiligen subs die nicht mehrzeiligen Anteile in der obersten Zeile anzeigen
 	GUI saklierbar machen, sodass 
+	Lösung finden für mehrere Verantwortliche
+	Export Dialog verbessern, Auswahl ob:
+		mehrere Themen zusammen exportiert werden sollen,
+		oder einzeln
+		ToDo Liste für jeden einzeln
+	Topics exportieren die bisher leer sind
+	Check_all button im SpeicherDialog
+	Buttons ausblenden wenn Ansicht gewechselt

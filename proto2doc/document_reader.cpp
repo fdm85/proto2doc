@@ -177,17 +177,17 @@ void document_reader::process_line(QStringList lines)
     tmp_entry.typ = lines.join("|");
   }
 
-  else if(lines.contains("-Inhalt: "))
-  {
-    lines.removeFirst();
-    tmp_entry.inhalt = lines.join("\r\n");
-  }
 
   else if(lines.contains("-Topic: "))
   {
     lines.removeFirst();
     tmp_entry.topic = lines.join("|");
+  }
 
+  else if(lines.contains("-Inhalt: "))
+  {
+    lines.removeFirst();
+    tmp_entry.inhalt = lines.join("\r\n");
     /* TODO check for existing entry first and if it is a duplicate,
      * add to separate list called duplicates or so.... */
 
@@ -195,17 +195,17 @@ void document_reader::process_line(QStringList lines)
     if(entry_c.o_specifier() == entry::_topic)
     {
       add_topic(entry_c);
-      tmp_entry.datum.clear();
-      tmp_entry.inhalt.clear();
-      tmp_entry.titel.clear();
-      tmp_entry.topic.clear();
-      tmp_entry.typ.clear();
-      tmp_entry.verantwortlich.clear();
     }
     else
     {
       add_sub(entry_c);
     }
+    tmp_entry.datum.clear();
+    tmp_entry.inhalt.clear();
+    tmp_entry.titel.clear();
+    tmp_entry.topic.clear();
+    tmp_entry.typ.clear();
+    tmp_entry.verantwortlich.clear();
   }
 }
 
