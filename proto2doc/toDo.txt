@@ -1,5 +1,6 @@
 Bugs
 	Specifier wird immer als toDo angezeigt
+	Fehler bei Rechtevererbung bei imporierten Topics und neuen Subs, die Inhalte sind nicht editierbar
 	
 	
 System Improvements
@@ -14,3 +15,4 @@ System Improvements
 	Topics exportieren die bisher leer sind
 	Check_all button im SpeicherDialog
 	Buttons ausblenden wenn Ansicht gewechselt
+	Subs verschieben können
